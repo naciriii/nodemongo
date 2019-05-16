@@ -23,6 +23,26 @@ class UserController {
 
         }).catch(e=>console.log(e))
     }
+    store(req, res)
+    {
+        let scheme = {
+            login:Joi.string().min(3).required(),
+            password:Joi.string().min(3).required()
+        }
+        let {error} = Joi.validate(request.body,scheme);
+
+        if(error) {
+            
+            request.session.errors = error.details;
+            response.redirect(request.header('Referer'));
+
+        }
+        let user = {
+            login:req.body.login,
+            password!:req.body.password
+        }
+
+    }
 
 
 }
