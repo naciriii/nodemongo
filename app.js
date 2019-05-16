@@ -1,0 +1,27 @@
+const express = require('express')
+const session = require('express-session')
+
+
+
+const app = express()
+const _userRoutes = require('./routes/user')
+const _loginRoutes = require('./routes/login')
+app.use(express.static('public'))
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(session({secret: "naciri", resave: true, saveUninitialized: true}))
+app.use((req, res, next)=>{res.locals.session = req.session; next();})
+app.set('view engine', 'ejs')
+app.set('views', __dirname + '/templates')
+app.use('/',_loginRoutes)
+app.use('/user',_userRoutes)
+
+
+
+
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+    console.log(`Connecting on port: ${port}`)
+    
+
+})
