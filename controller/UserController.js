@@ -1,4 +1,6 @@
 const db = require("../Models/Database")();
+const bcrypt = require('bcrypt');
+const Joi = require('joi');
 
 class UserController {
 
@@ -25,26 +27,52 @@ class UserController {
     }
     store(req, res)
     {
+        
+       
         let scheme = {
             login:Joi.string().min(3).required(),
-            password:Joi.string().min(3).required()
+            password:Joi.string().min(3).required(),
+            age:Joi.number().required()
         }
-        let {error} = Joi.validate(request.body,scheme);
+        let {error} = Joi.validate(req.body,scheme);
 
         if(error) {
             
-            request.session.errors = error.details;
+            req.session.errors = error.details;
             response.redirect(request.header('Referer'));
 
         }
         let user = {
             login:req.body.login,
-            password!:req.body.password
+            password:req.body.password,
+            age:req.body.age
         }
 
-    }
+     bcrypt.hash(user.password, 5).then(hash => {
+         user.password = hash;
+      
+         db.storeUser(user).then(result=> {
+             req.session.success = true;
+       
+             res.redirect('/user');
 
 
+         }).catch(err=>{
+             console.log('err', err);
+
+         })
+
+
+
+     }).catch(err=> {})
+           
+
+
+    //hash.then(res=>console.log(res))
+    
+   
+
+}
 }
 module.exports = function () {
     return  new UserController;

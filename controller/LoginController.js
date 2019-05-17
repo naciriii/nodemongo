@@ -1,5 +1,7 @@
 const Joi = require('joi'
 )
+const db = require("../Models/Database")();
+
 class LoginController {
 
 
@@ -28,17 +30,31 @@ class LoginController {
         }
         let {login} = request.body;
         let {password} = request.body;
-        if (login === 'nacer' && password === 'nacer') {
-            request.session.user = {name:login}
-         
-    
+
+        db.login(request.body).then(stat => {
+           
+            request.session.user = {name:login};
+            
             response.redirect('/user')
 
+        
 
-        } else {
+        }).catch(err=> {
+            
             request.session.errors = [{message: "wrong credentials"}]
             response.redirect(request.header('Referer'));
-        }
+
+        })
+       
+           
+         
+    
+     
+
+
+      
+           
+        
  
 
         
