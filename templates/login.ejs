@@ -1,5 +1,10 @@
 <%- include('header.ejs') %>
 <div class="container m-4">
+  <div class="card">
+    <div class="card-header">
+    Authentication
+    </div>
+    <div class="card-body">
         <form  method="post" action="">
             <div class="form-group">
               <label for="email">Login:</label>
@@ -18,15 +23,20 @@
                 <div class="form-group">
                 <% session.errors.forEach((err) => { %>
           
-                    <div class="alert alert-danger">
+                    <p class="alert alert-danger alert-dismissable">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
                       <%= err.message %>
-                    </div>
+                    </p>
                     <% }) %>
                   </div>
                   <% session.errors = null } %>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-secondary">Login</button>
           </form>
+          </div>
+          </div>
 </div>
+
+
 
 
 

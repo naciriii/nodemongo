@@ -6,20 +6,22 @@ class UserController {
 
     index(request, response)
     {
-        //response.render('users/index.ejs',{users: []});
+        
       db.getUsers().then(users => {
-          //console.log(users);
+        
 
-            response.render('users/index.ejs',{users: users});
+            return response.render('users/index.ejs',{users: users});
             
         }).catch(e=> console.log(e))
       
 
     }
     show(req, res) {
+
+
         let param = req.params.id;
         db.findUser(param).then(user=> {
-     res.send(user);
+     return res.send(user);
         
             
 
@@ -39,9 +41,10 @@ class UserController {
         if(error) {
             
             req.session.errors = error.details;
-            response.redirect(request.header('Referer'));
+            return res.redirect('back');
 
         }
+    
         let user = {
             login:req.body.login,
             password:req.body.password,
@@ -52,9 +55,9 @@ class UserController {
          user.password = hash;
       
          db.storeUser(user).then(result=> {
-             req.session.success = true;
+             req.session.success = "Added Successfully!";
        
-             res.redirect('/user');
+             return res.redirect('/user');
 
 
          }).catch(err=>{
@@ -68,9 +71,25 @@ class UserController {
            
 
 
-    //hash.then(res=>console.log(res))
+  
     
    
+
+}
+remove(req, res) {
+   
+    let id = req.params.id;
+
+
+   db.removeUser(id).then(r=> {
+      
+     req.session.success = "Deleted Successfully!";
+       
+            return res.redirect('/user');
+
+   }).catch(err=> {
+
+   })
 
 }
 }

@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Users Index</title>
+    <title>Users Management</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <body>
-        <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <nav class="container m-4 navbar navbar-expand-sm bg-light navbar-light">
+                <% if (session.user) { %>
                 <!-- Brand -->
                 <a class="navbar-brand" href="#">Logo</a>
               
@@ -22,9 +23,9 @@
                   </li>
                 </ul>
               
-                <ul class="navbar-nav navbar-right">
+                <ul class="navbar-nav ml-auto">
                   <!-- Dropdown -->
-                  <% if (session.user) { %>
+               
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop"
                      data-toggle="dropdown">
@@ -36,20 +37,7 @@
                       
                     </div>
                   </li>
-                  <% }else { %>
-                    <ul class="navbar-nav navbar-right">
-                    <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop"
-                             data-toggle="dropdown">
-                            login
-                            </a>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="/login">Login</a>
-                             
-                              
-                            </div>
-                          </li>
-
-                    <% } %>
+                 
                 </ul>
+                 <% } %>
               </nav>

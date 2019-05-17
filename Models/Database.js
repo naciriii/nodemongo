@@ -7,7 +7,7 @@ class Database {
 
     constructor() {
         this.db = null;
-        this.url = "mongodb://localhost:27017/Database";
+        this.url = "mongodb+srv://nacer:moslem1990@database-qltrm.mongodb.net/test?retryWrites=true";
        
     }
     async getDb() {
@@ -52,6 +52,11 @@ class Database {
                 throw new Error('user not found wrong poass');
             }
         
+    }
+    async removeUser(id) {
+        let db = await this.getDb();
+        let res = db.collection('users').deleteOne({_id: new ObjectId(id)});
+        return res;
     }
 
 

@@ -23,7 +23,7 @@ class LoginController {
         if(error) {
             
             request.session.errors = error.details;
-            response.redirect(request.header('Referer'));
+            return response.redirect(request.header('Referer'));
          
 
 
@@ -35,39 +35,24 @@ class LoginController {
            
             request.session.user = {name:login};
             
-            response.redirect('/user')
+            return response.redirect('/user')
 
         
 
         }).catch(err=> {
             
             request.session.errors = [{message: "wrong credentials"}]
-            response.redirect(request.header('Referer'));
+            return response.redirect(request.header('Referer'));
 
         })
        
-           
-         
-    
-     
 
-
-      
-           
-        
- 
-
-        
-  
-        
-        
-       
 
     }
     logout(req, res)
     {
         req.session.destroy();
-         res.redirect('/login');
+         return res.redirect('/login');
 
     }
 
