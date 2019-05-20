@@ -1,5 +1,6 @@
 const express = require('express')
 const session = require('express-session')
+const methodOverride = require('method-override')
 
 
 
@@ -11,6 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(session({secret: "naciri", resave: true, saveUninitialized: true}))
 app.use((req, res, next)=>{res.locals.session = req.session; next();})
+app.use(methodOverride('_method'));
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/templates')
 app.use('/',_loginRoutes)

@@ -35,8 +35,8 @@
                         <td><%= user.age %></td>
                         <td><a href="user/<%= user._id %>"><button class="btn btn-sm btn-primary">Show</button>
                         </a>
-                          <a href="user/edit/<%= user._id %>"><button class="btn btn-sm btn-info">Edit</button>
-                        </a>
+                           <button onclick="updateUser(<%= JSON.stringify(user) %>)" class="btn btn-sm btn-info">Edit</button>
+                       
                        <a href="user/delete/<%= user._id %>"><button class="btn btn-sm btn-danger">Delete</button></td>
                     </tr>
                     <% }) %>
@@ -52,6 +52,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
             <form  method="post" action="/user">
+              
         <div class="modal-header">
           <h5 class="modal-title">Add User</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -70,7 +71,58 @@
                         </div>
                         <div class="form-group">
                           <label for="pwd">Age:</label>
-                          <input name="age" type="text" class="form-control" id="pwd">
+                          <input name="age" type="text" class="form-control" id="age">
+                        </div>
+                     
+                        <% if(session.errors) { %>
+
+                            <div class="form-group">
+                            <% session.errors.forEach((err) => { %>
+                      
+                                <div class="alert alert-danger alert-dismissable">
+                                  <%= err.message %>
+                                  <button class="close" type="button" data-dismiss="alert">&times;</button>
+                                </div>
+                                <% }) %>
+                              </div>
+                              <%  } %>
+                  
+                     
+          
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-primary">Save</button>
+          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="updateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+            <form  method="post" action="/user?_method=PATCH">
+            
+        <div class="modal-header">
+          <h5 class="modal-title">Update User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+       
+                        <div class="form-group">
+                          <input type="hidden" name="id" id="user_id">
+                          <label for="email">Login:</label>
+                          <input name="login" type="text" class="form-control" id="user_login">
+                        </div>
+                        <div onclick="activateThis(this)" class="form-group">
+                          <label for="pwd">Password:</label>
+                          <input  disabled name="password" type="password" class="form-control" id="user_password">
+                        </div>
+                        <div class="form-group">
+                          <label for="pwd">Age:</label>
+                          <input name="age" type="text" class="form-control" id="user_age">
                         </div>
                      
                         <% if(session.errors) { %>
@@ -100,8 +152,22 @@
 
   
 <%- include('../footer.ejs') %>
-
-        <% if(session.errors) { %>
+<script>
+function updateUser(user) {
+  $('#user_password ').prop('disabled',true);
+  
+  $('#user_id').val(user._id);
+  $('#user_login').val(user.login);
+  $('#user_password').val(user.password);
+  $('#user_age').val(user.age);
+  $('#updateModal').modal('show');
+}
+function activateThis(el) {
+  console.log(el);
+  $(el).find('input').prop('disabled',false);
+}
+</script>
+        <% if(session.storeErrors != undefined) { %>
           <script type="text/javascript">
         
       $(function() {
@@ -111,4 +177,6 @@
 
 </script>
 
-      <% session.errors = null } %>
+      <% session.storeErrors = null } else { %>
+
+     <% } %>

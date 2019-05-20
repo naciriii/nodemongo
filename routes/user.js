@@ -16,6 +16,7 @@ router.use((req, res, next) => {
 
 router.get('/', _usercontroller.index);
 router.post('/', _usercontroller.store);
+router.patch('/', _usercontroller.update);
 router.get('/delete/:id', _usercontroller.remove);
 router.get('/:id', _usercontroller.show);
 

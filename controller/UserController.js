@@ -29,6 +29,7 @@ class UserController {
     }
     store(req, res)
     {
+       
         
        
         let scheme = {
@@ -40,7 +41,7 @@ class UserController {
 
         if(error) {
             
-            req.session.errors = error.details;
+            req.session.storeErrors = error.details;
             return res.redirect('back');
 
         }
@@ -92,6 +93,60 @@ remove(req, res) {
    })
 
 }
+update(req, res)
+{ 
+   
+   
+    let scheme = {
+        id:Joi.string().required(),
+        login:Joi.string().min(3).required(),
+        age:Joi.number().required()
+    }
+    let {error} = Joi.validate(req.body,scheme);
+
+    if(error) {
+        
+        req.session.updateErrors = error.details;
+        return res.redirect('back');
+
+    }
+
+    let user = {
+        _id:req.body.id,
+        login:req.body.login,
+        password:req.body.password,
+        age:req.body.age
+    }
+
+ bcrypt.hash(user.password, 5).then(hash => {
+     user.password = hash;
+  
+     db.updateUser(user).then(result=> {
+         console.log(result)
+         req.session.success = "Updated Successfully!";
+   
+         return res.redirect('/user');
+
+
+     }).catch(err=>{
+         console.log('err', err);
+
+     })
+
+
+
+ }).catch(err=> {
+     console.log(err)
+ })
+       
+
+
+
+
+
+
+}
+
 }
 module.exports = function () {
     return  new UserController;

@@ -6,6 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Users Management</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+    .welcomename {
+      text-transform: capitalize      
+    }
+    </style>
 </head>
 <body>
         <nav class="container m-4 navbar navbar-expand-sm bg-light navbar-light">
@@ -27,7 +32,7 @@
                   <!-- Dropdown -->
                
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop"
+                    <a class="nav-link dropdown-toggle welcomename" href="#" id="navbardrop"
                      data-toggle="dropdown">
                     <%= session.user.name %>
                     </a>
