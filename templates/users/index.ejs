@@ -125,10 +125,10 @@
                           <input name="age" type="text" class="form-control" id="user_age">
                         </div>
                      
-                        <% if(session.errors) { %>
+                        <% if(session.updateErrors) { %>
 
                             <div class="form-group">
-                            <% session.errors.forEach((err) => { %>
+                            <% session.updateErrors.forEach((err) => { %>
                       
                                 <div class="alert alert-danger alert-dismissable">
                                   <%= err.message %>
@@ -180,3 +180,16 @@ function activateThis(el) {
       <% session.storeErrors = null } else { %>
 
      <% } %>
+     <% if(session.stupdateErrors != undefined) { %>
+      <script type="text/javascript">
+    
+  $(function() {
+    $('#updateModal').modal('show');
+ 
+});
+
+</script>
+
+  <% session.stupdateErrors = null } else { %>
+
+ <% } %>

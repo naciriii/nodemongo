@@ -102,7 +102,13 @@ update(req, res)
         login:Joi.string().min(3).required(),
         age:Joi.number().required()
     }
+
+    if(req.body.password) {
+        scheme.password = Joi.string().min(5)
+    }
+
     let {error} = Joi.validate(req.body,scheme);
+ 
 
     if(error) {
         
@@ -114,30 +120,45 @@ update(req, res)
     let user = {
         _id:req.body.id,
         login:req.body.login,
-        password:req.body.password,
+     
         age:req.body.age
     }
+ let t = (async () => {
+    
+        if(req.body.password) {
+            user.password = req.body.password;
+            let hash = await bcrypt.hash(user.password, 5);
+            user.password = hash;
+            return user;
 
- bcrypt.hash(user.password, 5).then(hash => {
-     user.password = hash;
-  
+        } else {
+            return user;
+
+        }
+    }
+    )()
+    t.then(user => {
+
      db.updateUser(user).then(result=> {
-         console.log(result)
-         req.session.success = "Updated Successfully!";
-   
-         return res.redirect('/user');
+     
+        req.session.success = "Updated Successfully!";
+  
+        return res.redirect('/user');
 
 
-     }).catch(err=>{
-         console.log('err', err);
+    }).catch(err=>{
+        console.log('err', err);
 
-     })
+    })
+        
+    })
+  
+
+  
 
 
 
- }).catch(err=> {
-     console.log(err)
- })
+
        
 
 
