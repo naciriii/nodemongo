@@ -1,15 +1,15 @@
 const db = require("../Models/Database")();
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
+const User = require('../Models/User');
+
 
 class UserController {
 
     index(request, response)
     {
-        
-      db.getUsers().then(users => {
-        
-
+      
+      User.find({}).then(users => {
             return response.render('users/index.ejs',{users: users});
             
         }).catch(e=> console.log(e))
@@ -17,15 +17,11 @@ class UserController {
 
     }
     show(req, res) {
-
-
-        let param = req.params.id;
-        db.findUser(param).then(user=> {
-     return res.send(user);
-        
-            
-
-        }).catch(e=>console.log(e))
+        let param = req.params.id
+      User.findById(param).then(data => {
+          return res.json(data);
+      })
+   
     }
     store(req, res)
     {
@@ -54,8 +50,9 @@ class UserController {
 
      bcrypt.hash(user.password, 5).then(hash => {
          user.password = hash;
-      
-         db.storeUser(user).then(result=> {
+            let u = new User(user);
+            console.log(u);
+         u.save().then(result=> {
              req.session.success = "Added Successfully!";
        
              return res.redirect('/user');
@@ -82,7 +79,7 @@ remove(req, res) {
     let id = req.params.id;
 
 
-   db.removeUser(id).then(r=> {
+   User.findByIdAndRemove(id).then(r=> {
       
      req.session.success = "Deleted Successfully!";
        
@@ -139,7 +136,7 @@ update(req, res)
     )()
     t.then(user => {
 
-     db.updateUser(user).then(result=> {
+     User.find(user).then(result=> {
      
         req.session.success = "Updated Successfully!";
   

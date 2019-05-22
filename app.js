@@ -1,7 +1,7 @@
 const express = require('express')
 const session = require('express-session')
 const methodOverride = require('method-override')
-const db = require('./Models/Db');
+require('./Models/Db')
 
 
 

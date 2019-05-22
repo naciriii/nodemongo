@@ -33,11 +33,11 @@
                        
                         <td><%= user.login %></td>
                         <td><%= user.age %></td>
-                        <td><a href="user/<%= user._id %>"><button class="btn btn-sm btn-primary">Show</button>
+                        <td><a href="/user/<%= user._id %>"><button class="btn btn-sm btn-primary">Show</button>
                         </a>
                            <button onclick="updateUser(<%= JSON.stringify(user) %>)" class="btn btn-sm btn-info">Edit</button>
                        
-                       <a href="user/delete/<%= user._id %>"><button class="btn btn-sm btn-danger">Delete</button></td>
+                       <a href="/user/delete/<%= user._id %>"><button class="btn btn-sm btn-danger">Delete</button></td>
                     </tr>
                     <% }) %>
 
