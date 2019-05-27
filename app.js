@@ -7,6 +7,7 @@ require('./Models/Db')
 
 const app = express()
 const _userRoutes = require('./routes/user')
+const _postRoutes = require('./routes/post')
 const _loginRoutes = require('./routes/login')
 app.use(express.static('public'))
 app.use(express.json())
@@ -18,6 +19,7 @@ app.set('view engine', 'ejs')
 app.set('views', __dirname + '/templates')
 app.use('/',_loginRoutes)
 app.use('/user',_userRoutes)
+app.use('/post',_postRoutes)
 
 
 

@@ -1,6 +1,6 @@
 const Joi = require('joi'
 )
-const db = require("../Models/Database")();
+const User = require('../Models/User')
 
 class LoginController {
 
@@ -9,12 +9,15 @@ class LoginController {
     index(request, response)
     {
        
+       
         response.render('login.ejs');
 
     }
     postLogin(request, response)
     {
-        let scheme = {
+        
+ 
+       /* let scheme = {
             login:Joi.string().min(3).required(),
             password:Joi.string().min(3).required()
         }
@@ -27,26 +30,22 @@ class LoginController {
          
 
 
-        }
+        }*/
         let {login} = request.body;
         let {password} = request.body;
-
-        db.login(request.body).then(stat => {
+     
+          User.loginAct(login, password).then(result=> {
+       
+            request.session.user = {name:result.login, id: result._id};
+             
            
-            request.session.user = {name:login};
-            
-            return response.redirect('/user')
 
-        
-
-        }).catch(err=> {
-            
+              return response.redirect('/user')
+          }).catch(error => {
+              
             request.session.errors = [{message: "wrong credentials"}]
             return response.redirect(request.header('Referer'));
-
-        })
-       
-
+          })
 
     }
     logout(req, res)

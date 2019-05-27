@@ -1,0 +1,206 @@
+<%- include('../header.ejs') %>
+<div class="container m-4">
+    <div class="card">
+        <div class="card-header">
+           Posts
+
+            <button data-toggle="modal" data-target="#addModal" class=" btn btn-sm btn-outline-secondary float-right">Add New</button>
+
+        </div>
+        <div class="card-body">
+            <% if(session.success) { %>
+              <div class="form-group">
+         
+        
+                  <div class="alert alert-success alert-dismissable">
+                    <%= session.success %>
+                     <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    
+                  </div>
+              
+                </div>
+                <% session.success = null } %>
+            <table class="table table-bordered">
+                <thead>
+                  
+                    <th>title</th>
+                    <th>pages</th>
+                    <th>Author</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <% posts.forEach((post) => { %>
+                    <tr>
+                       
+                        <td><%= post.title %></td>
+                        <td><%= post.page_number %></td>
+                        <td><%= post.author.login %></td>
+                        <td><a href="/post/<%= post._id %>"><button class="btn btn-sm btn-primary">Show</button>  </a>
+                      
+                      
+                           <button onclick="updatepost(<%= JSON.stringify(post) %>)" class="btn btn-sm btn-info">Edit  </button>
+                       
+                       <a href="/post/delete/<%= post._id %>"><button class="btn btn-sm btn-danger">Delete</button>  </a></td>
+                    </tr>
+                    <% }) %>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+<div class="modal" id="addModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+            <form  method="post" action="/post">
+              
+        <div class="modal-header">
+          <h5 class="modal-title">Add post</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+       
+                        <div class="form-group">
+                          <label for="email">Title:</label>
+                          <input name="title" type="text" class="form-control" id="email">
+                        </div>
+                        <div class="form-group">
+                          <label for="pwd">Page number</label>
+                          <input name="page_number" type="text" class="form-control" id="pwd">
+                        </div>
+                        <div class="form-group">
+                          <label for="pwd">Author:</label>
+                          <select name="author" id="" class="form-control">
+                            <% users.forEach(user => { %>
+                              <option value="<%= user._id %>"><%= user.login %></option>
+
+                              <% }); %>
+
+                            
+                          </select>
+                          
+                        </div>
+                     
+                        <% if(session.errors) { %>
+
+                            <div class="form-group">
+                            <% session.errors.forEach((err) => { %>
+                      
+                                <div class="alert alert-danger alert-dismissable">
+                                  <%= err.message %>
+                                  <button class="close" type="button" data-dismiss="alert">&times;</button>
+                                </div>
+                                <% }) %>
+                              </div>
+                              <%  } %>
+                  
+                     
+          
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-primary">Save</button>
+          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="updateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+            <form  method="post" action="/post?_method=PATCH">
+            
+        <div class="modal-header">
+          <h5 class="modal-title">Update post</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+       
+                        <div class="form-group">
+                          <input type="hidden" name="id" id="post_id">
+                          <label for="email">Login:</label>
+                          <input name="login" type="text" class="form-control" id="post_login">
+                        </div>
+                        <div onclick="activateThis(this)" class="form-group">
+                          <label for="pwd">Password:</label>
+                          <input  disabled name="password" type="password" class="form-control" id="post_password">
+                        </div>
+                        <div class="form-group">
+                          <label for="pwd">Age:</label>
+                          <input name="age" type="text" class="form-control" id="post_age">
+                        </div>
+                     
+                        <% if(session.updateErrors) { %>
+
+                            <div class="form-group">
+                            <% session.updateErrors.forEach((err) => { %>
+                      
+                                <div class="alert alert-danger alert-dismissable">
+                                  <%= err.message %>
+                                  <button class="close" type="button" data-dismiss="alert">&times;</button>
+                                </div>
+                                <% }) %>
+                              </div>
+                              <%  } %>
+                  
+                     
+          
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-primary">Save</button>
+          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+
+  
+<%- include('../footer.ejs') %>
+<script>
+function updatepost(post) {
+  $('#post_password ').prop('disabled',true);
+  
+  $('#post_id').val(post._id);
+  $('#post_login').val(post.login);
+  $('#post_password').val(post.password);
+  $('#post_age').val(post.age);
+  $('#updateModal').modal('show');
+}
+function activateThis(el) {
+  console.log(el);
+  $(el).find('input').prop('disabled',false);
+}
+</script>
+        <% if(session.storeErrors != undefined) { %>
+          <script type="text/javascript">
+        
+      $(function() {
+        $('#addModal').modal('show');
+     
+    });
+
+</script>
+
+      <% session.storeErrors = null } else { %>
+
+     <% } %>
+     <% if(session.stupdateErrors != undefined) { %>
+      <script type="text/javascript">
+    
+  $(function() {
+    $('#updateModal').modal('show');
+ 
+});
+
+</script>
+
+  <% session.stupdateErrors = null } else { %>
+
+ <% } %>
