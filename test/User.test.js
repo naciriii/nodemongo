@@ -1,5 +1,6 @@
 const mocha = require('mocha');
-const assert = require('assert')
+const assert = require('chai').assert
+const app = require('../app');
 const mongoose = require('mongoose');
 const User = require('../Models/User')
 
@@ -47,13 +48,14 @@ describe("User get data ", function() {
                 let expecteduser = users[0];
                let user = await User.findById(expecteduser._id);
               
-                assert(user != null)
+                assert.isNotNull(user)
                 let status = User.updateOne(user._id, {
                     login: "Naciri"
                 })
                  user = await User.findById(expecteduser._id);
        
-                 assert(user.login === "Naciri")
+                 assert.strictEqual(user.login,"Naciri")
+                
 
                     
                    
