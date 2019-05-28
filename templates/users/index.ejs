@@ -73,6 +73,39 @@
                           <label for="pwd">Age:</label>
                           <input name="age" type="text" class="form-control" id="age">
                         </div>
+                        <div class="form-gourp">
+                          <button type="button" onclick="showPosts(event)" class="btn btn-primary btn-block">Add Posts</button>
+                          <table class="d-none table table-bordered">
+                            <thead>
+                              <th>
+                                Title
+                              </th>
+                              <th>
+                                Pages
+                              </th>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <input type="text" name="posts[0][title]" class="form-control">
+                                </td>
+                                <td>
+                                  <input type="text" name="posts[0][pages]" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" name="posts[1][title]" class="form-control">
+                                  </td>
+                                  <td>
+                                    <input type="text" name="posts[1][pages]" class="form-control">
+                                  </td>
+
+                              </tr>
+                              <tr>
+                             
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                      
                         <% if(session.errors) { %>
 
@@ -153,6 +186,13 @@
   
 <%- include('../footer.ejs') %>
 <script>
+  function showPosts(e)
+  {
+    let table = $(e.target).siblings('table').first();
+ 
+    $(table).toggleClass('d-none')
+
+  }
 function updateUser(user) {
   $('#user_password ').prop('disabled',true);
   

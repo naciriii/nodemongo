@@ -19,8 +19,8 @@ UserSchema = new schema(
         },
         posts: [
             {
-            type:schema.Types.ObjectId,
-            ref: 'Post'
+            type:schema.ObjectId,
+            ref: 'post'
         }
     ]
     }

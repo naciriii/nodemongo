@@ -2,6 +2,7 @@ const db = require("../Models/Database")();
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
 const User = require('../Models/User');
+const Post = require('../Models/Post');
 
 
 class UserController {
@@ -9,7 +10,8 @@ class UserController {
     index(request, response)
     {
       
-      User.find({}).then(users => {
+      User.find({}).populate('posts').then(users => {
+   
             return response.render('users/index.ejs',{users: users});
             
         }).catch(e=> console.log(e))
@@ -25,13 +27,16 @@ class UserController {
     }
     store(req, res)
     {
+     
+       
        
         
        
         let scheme = {
             login:Joi.string().min(3).required(),
             password:Joi.string().min(3).required(),
-            age:Joi.number().required()
+            age:Joi.number().required(),
+            posts:Joi.array()
         }
         let {error} = Joi.validate(req.body,scheme);
 
@@ -41,31 +46,46 @@ class UserController {
             return res.redirect('back');
 
         }
+        if(req.body.posts.length) {
+          
+            Post.bulkInsert(req.body.posts).then(docs=> {
+         
+               
+
+                let user = {
+                    login:req.body.login,
+                    password:req.body.password,
+                    age:req.body.age,
+                    posts:docs
+                }
+                
+        
+             bcrypt.hash(user.password, 5).then(hash => {
+                 user.password = hash;
+                    let u = new User(user);
+                  
+                 u.save().then(result=> {
+                     req.session.success = "Added Successfully!";
+               
+                     return res.redirect('/user');
+        
+        
+                 }).catch(err=>{
+                     console.log('err', err);
+        
+                 })
+
+
+            })
+
+      
     
-        let user = {
-            login:req.body.login,
-            password:req.body.password,
-            age:req.body.age
-        }
-
-     bcrypt.hash(user.password, 5).then(hash => {
-         user.password = hash;
-            let u = new User(user);
-            console.log(u);
-         u.save().then(result=> {
-             req.session.success = "Added Successfully!";
-       
-             return res.redirect('/user');
-
-
-         }).catch(err=>{
-             console.log('err', err);
-
-         })
+     
 
 
 
      }).catch(err=> {})
+    }
            
 
 

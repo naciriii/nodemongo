@@ -8,7 +8,8 @@ class PostController {
 
     async index(request, response)
     {   
-        let users =  await User.find({});
+        let users =  await User.find({}).populate('posts');
+        console.log(users);
 
      
       
@@ -16,7 +17,7 @@ class PostController {
       
       Post.find({}).populate('author').exec().then(Posts => {
           //res.send(Posts)
-          console.log(Posts);
+          //console.log(Posts);
             return response.render('posts/index.ejs',{posts: Posts, users: users});
             
         }).catch(e=> console.log(e))
