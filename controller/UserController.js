@@ -99,7 +99,7 @@ remove(req, res) {
     let id = req.params.id;
 
 
-   User.findByIdAndRemove(id).then(r=> {
+   User.deleteOne({_id:id}).then(r=> {
       
      req.session.success = "Deleted Successfully!";
        
