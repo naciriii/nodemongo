@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const postcontroller = require('../controller/PostController')();
-/*router.use((req, res, next) => {
+//router.use((req, res, next) => {
    
     if(req.session.user === undefined) {
        // console.log(req.session);
@@ -12,7 +12,7 @@ const postcontroller = require('../controller/PostController')();
     }
 
     return next();
-})*/
+})//
 
 router.get('/', postcontroller.index);
 router.post('/', postcontroller.store);

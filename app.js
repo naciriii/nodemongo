@@ -23,14 +23,14 @@ app.use('/post',_postRoutes)
 
 
 
-/*app.use((req, res, next)=> {
+app.use((req, res, next)=> {
     let isAuth = req.session.user || false;
     if( !isAuth) {
         res.redirect('/login')    
     } else {
         res.redirect('/user')
     }
-})*/
+})
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`Connecting on port: ${port}`)
