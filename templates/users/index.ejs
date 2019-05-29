@@ -51,7 +51,7 @@
 <div class="modal" id="addModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-            <form  method="post" action="/user">
+            <form  method="post"   <% if (session.user) { %> action="/user" <% } else { %> action="/admin/users" <% } %> >
               
         <div class="modal-header">
           <h5 class="modal-title">Add User</h5>
