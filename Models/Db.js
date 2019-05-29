@@ -3,7 +3,7 @@ let url = "mongodb://nacer:moslem1990@cluster0-shard-00-00-tksix.mongodb.net:270
 
 
 mongoose.connect(url, { useNewUrlParser: true,  useFindAndModify: false });
-let db = mongoose.connection
+let db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
