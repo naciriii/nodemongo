@@ -17,7 +17,7 @@ describe("User Unit ", function () {
         let url = process.env.MONGODB_URI ||  "mongodb://nacer:moslem1990@cluster0-shard-00-00-tksix.mongodb.net:27017,cluster0-shard-00-01-tksix.mongodb.net:27017,cluster0-shard-00-02-tksix.mongodb.net:27017/Learning?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true"; 
      
         
-       mongoose.connect(url,{ useNewUrlParser: true });
+       mongoose.connect(url,{ useNewUrlParser: true,  useCreateIndex: true,  useFindAndModify: false });
        let db = mongoose.connection;
         db.on('error', function (err) {
             
@@ -49,14 +49,19 @@ describe("User Unit ", function () {
 
          
             if(users.length) {
-                let expecteduser = users[0];
-               let user = await User.findById(expecteduser._id);
+                let targetUser = users[0];
+               let updateUser = await User.findOneAndUpdate({_id:targetUser._id}, {
+                    login: 'Naciri'
+                })
+           
+               let foundUser = await User.findById(targetUser._id);
               
-                assert.isNotNull(user)
+                assert.isNotNull(foundUser)
+           
+
              
-                 user = await User.findById(expecteduser._id);
        
-                 assert.strictEqual(user.login,"Naciri")
+                 assert.strictEqual(foundUser.login,"Naciri")
                 
 
                     
